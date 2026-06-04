@@ -5,7 +5,7 @@ import (
 )
 
 func AlignRight(ascii string) string {
-	terminalWidth := GetTerminalWidth()
+	terminalWidth := getTerminalWidth()
 	lines := strings.Split(ascii, "\n")
 	var result strings.Builder
 
@@ -22,3 +22,4 @@ func AlignRight(ascii string) string {
 	}
 	return result.String()
 }
+
