@@ -7,24 +7,57 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 4 {
+	args := os.Args[1:]
+
+	if len(args) == 0 {
 		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
 		return
 	}
-	if !strings.HasPrefix(os.Args[1], "--align=") {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+
+	if len(args) == 1 {
+		if strings.HasPrefix(args[0], "--") {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+			return
+		}
+		ascii := LoadBanner(args[0], "standard.txt")
+		fmt.Print(ascii)
 		return
 	}
-	align := strings.TrimPrefix(os.Args[1], "--align=")
-	if !IsValidAlign(align) {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+
+	if len(args) == 2 {
+		if strings.HasPrefix(args[0], "--") {
+			fmt.Println("Usage: go run . OPTION STRING BANNER")
+			return
+		}
+		banner := args[1]
+		if !IsValidateBanner(banner) {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+			return
+		}
+		ascii := LoadBanner(args[0], banner+".txt")
+		fmt.Print(ascii)
 		return
 	}
-	banner := os.Args[3]
-	if !IsValidateBanner(banner) {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+
+	if len(args) == 3 {
+		if !strings.HasPrefix(args[0], "--align=") {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+			return
+		}
+		align := strings.TrimPrefix(args[0], "--align=")
+		if !IsValidAlign(align) {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+			return
+		}
+		banner := args[2]
+		if !IsValidateBanner(banner) {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
+			return
+		}
+		ascii := LoadBanner(args[1], banner+".txt")
+		fmt.Print(ApplyAlignment(ascii, align, args[1], banner+".txt"))
 		return
 	}
-	ascii := LoadBanner(os.Args[2], banner+".txt")
-	fmt.Print(ApplyAlignment(ascii, align))
+
+	fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
 }
