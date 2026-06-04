@@ -1,6 +1,6 @@
 package main
 
-func ApplyAlignment(ascii, align string) string {
+func ApplyAlignment(ascii, align, originalText, banner string) string {
 	switch align {
 	case "left":
 		return ascii
@@ -9,7 +9,7 @@ func ApplyAlignment(ascii, align string) string {
 	case "center":
 		return AlignCenter(ascii)
 	case "justify":
-		return AlignJustify(ascii)
+		return AlignJustify(ascii, originalText, banner)
 	}
 	return ascii
 }
